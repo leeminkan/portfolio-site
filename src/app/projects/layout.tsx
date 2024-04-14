@@ -60,6 +60,11 @@ const data = [
         icon: <HiTerminal className='w-4 h-4' />
       },
       {
+        title: 'Laravel',
+        href: '/projects?tag=Laravel',
+        icon: <RiReactjsLine className='w-4 h-4' />
+      },
+      {
         title: 'React',
         href: '/projects?tag=React',
         icon: <RiReactjsLine className='w-4 h-4' />
