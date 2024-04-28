@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
-import { RiReactjsLine, RiHtml5Fill } from 'react-icons/ri'
-import { TbBrandNextjs } from 'react-icons/tb'
+import { RiReactjsLine } from 'react-icons/ri'
+import { TbBrandNextjs, TbBrandLaravel } from 'react-icons/tb'
 import { HiTerminal } from 'react-icons/hi'
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/atoms/accordion'
@@ -62,7 +62,7 @@ const data = [
       {
         title: 'Laravel',
         href: '/projects?tag=Laravel',
-        icon: <RiReactjsLine className='w-4 h-4' />
+        icon: <TbBrandLaravel className='w-4 h-4' />
       },
       {
         title: 'React',
@@ -70,19 +70,9 @@ const data = [
         icon: <RiReactjsLine className='w-4 h-4' />
       },
       {
-        title: 'React Native',
-        href: '/projects?tag=React Native',
-        icon: <RiReactjsLine className='w-4 h-4' />
-      },
-      {
         title: 'Next',
         href: '/projects?tag=Next',
         icon: <TbBrandNextjs className='w-4 h-4' />
-      },
-      {
-        title: 'HTML',
-        href: '/projects?tag=HTML',
-        icon: <RiHtml5Fill className='w-4 h-4' />
       }
     ]
   }

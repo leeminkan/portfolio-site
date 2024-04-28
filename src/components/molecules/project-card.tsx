@@ -8,8 +8,8 @@ import { Projects } from 'contentlayer/generated'
 export const ProjectCard = ({ data }: { data: Projects }) => {
   return (
     <Dialog>
-      <DialogTrigger>
-        <article className='rounded-md overflow-hidden group hover:shadow-2xl transition-shadow duration-500 border hover:shadow-secondary'>
+      <DialogTrigger className='h-full'>
+        <article className='h-full rounded-md overflow-hidden group hover:shadow-2xl transition-shadow duration-500 border hover:shadow-secondary'>
           <figure className='relative aspect-video overflow-hidden'>
             <Image
               src={data.image}
