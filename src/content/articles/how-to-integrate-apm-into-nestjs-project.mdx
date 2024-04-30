@@ -1,0 +1,247 @@
+---
+title: 'How to integrate APM into NestJS project'
+summary: "This article provides a comprehensive guide on integrating Application Performance Monitoring (APM) into NestJS projects. APM is essential for monitoring and improving the performance of Node.js applications, especially those built with NestJS due to their modular and scalable nature. By seamlessly integrating APM, developers gain real-time visibility into their application's performance metrics, enabling them to identify and resolve issues efficiently. The article covers the installation of the Elastic APM Node.js Agent, configuration steps, and implementation of error capture mechanisms. With this guide, developers can enhance the performance and reliability of their NestJS applications, delivering a smoother user experience."
+publishedDate: 'Apr 30, 2024'
+tag:
+  - NestJS
+---
+
+![Preview](/articles/how-to-integrate-apm-into-nestjs-project/preview.png)
+
+# How to integrate APM into NestJS project
+
+In this article, we'll explore how to integrate APM into NestJS projects, empowering developers to monitor, analyze, and enhance the performance of our applications effectively.
+
+## Prerequisites
+
+For local development, you can use the docker-compose sample below to init a APM server
+
+```yaml
+// docker-compose.yml
+version: '2.0'
+services:
+  apm-server:
+    image: docker.elastic.co/apm/apm-server:7.17.3
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+      kibana:
+        condition: service_healthy
+    cap_add: ['CHOWN', 'DAC_OVERRIDE', 'SETGID', 'SETUID']
+    cap_drop: ['ALL']
+    ports:
+      - 8200:8200
+    command: >
+      apm-server -e
+        -E apm-server.rum.enabled=true
+        -E setup.kibana.host=kibana:5601
+        -E setup.template.settings.index.number_of_replicas=0
+        -E apm-server.kibana.enabled=true
+        -E apm-server.kibana.host=kibana:5601
+        -E output.elasticsearch.hosts=["elasticsearch:9200"]
+    healthcheck:
+      interval: 10s
+      retries: 12
+      test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:8200/
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.3
+    environment:
+      - bootstrap.memory_lock=true
+      - cluster.name=docker-cluster
+      - cluster.routing.allocation.disk.threshold_enabled=false
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ulimits:
+      memlock:
+        hard: -1
+        soft: -1
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    healthcheck:
+      interval: 20s
+      retries: 10
+      test: curl -s http://localhost:9200/_cluster/health | grep -vq '"status":"red"'
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.17.3
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    ports:
+      - 5601:5601
+    healthcheck:
+      interval: 10s
+      retries: 20
+      test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:5601/api/status
+
+volumes:
+  es-data:
+```
+
+## Getting Started
+
+### Step 1: Install Elastic APM Node.js Agent
+
+Open your terminal and run the following command to install elastic-apm-node into your project
+
+```bash
+cd your-project
+npm install --save elastic-apm-node
+```
+
+This is the official Node.js application performance monitoring (APM) agent for the Elastic Observability solution. It is a Node.js package that runs with your Node.js application to automatically capture errors, tracing data, and performance metrics. APM data is sent to your Elastic Observability deployment -- hosted in Elastic's cloud or in your own on-premises deployment -- where you can monitor your application, create alerts, and quick identify root causes of service issues.
+
+### Step 2: Create a elastic-apm.ts file to manage apm agent instance
+
+```ts
+// @src/libs/apm/elastic-apm/elastic-apm.ts
+import APM from 'elastic-apm-node'
+// Need this import since APM agent will use env variables by default
+import 'dotenv/config'
+
+let instance: APM.Agent | undefined
+
+/**
+ * Initializes the APM agent with the provided configuration options.
+ * If no configuration is provided, the agent is started with default options.
+ * Note:
+ * - It must be started before require(...) statements for other modules.
+ * - The APM agent automatically instruments modules by interposing itself in the import process.
+ * - If a given module is imported before the APM agent has started, then it won’t be able to instrument that module.
+ * @param {APM.AgentConfigOptions} [config] - The configuration options for the APM agent.
+ * @returns {void}
+ */
+export const initializeAPMAgent = (config?: APM.AgentConfigOptions): void => {
+  instance = config ? APM.start(config) : APM.start()
+}
+
+/**
+ * Retrieves the instance of the APM agent.
+ * Throws an error if the agent is not initialized.
+ * @returns {APM.Agent} The instance of the APM agent.
+ * @throws {Error} Throws an error if the APM agent is not initialized.
+ */
+export const getInstance = (): APM.Agent => {
+  if (!instance) {
+    throw new Error('APM Agent is not initialized (run initializeAPMAgent)')
+  }
+
+  return instance
+}
+```
+
+### Step 3: Start apm agent in app.ts file
+
+Starting the APM agent early in the application's lifecycle ensures that it can properly instrument all relevant parts of the application code, including HTTP requests and other modules.
+
+```ts
+// @src/app.ts
+// Please note that the order import is so important,
+// APM agent need start before the modules such as http,...
+import { initializeAPMAgent } from '@src/libs/apm/elastic-apm'
+initializeAPMAgent({
+  serviceName: 'internal-app-server'
+})
+
+async function bootstrap() {
+  // ...
+}
+
+bootstrap()
+```
+
+### Step 4: Capture the error and send to APM server
+
+Create an error interceptor
+
+```ts
+// @src/libs/apm/elastic-apm/elastic-apm.interceptor.ts
+import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common'
+import { Observable, throwError } from 'rxjs'
+import { catchError } from 'rxjs/operators'
+
+import { getInstance } from './elastic-apm'
+
+@Injectable()
+export class ElasticApmErrorInterceptor implements NestInterceptor {
+  /**
+   * Intercepts the execution context and handles errors by capturing them with APM Agent.
+   * @param context The execution context.
+   * @param next The call handler.
+   * @returns An observable that emits the result or throws an error.
+   */
+  public intercept(context: ExecutionContext, next: CallHandler<any>): Observable<any> {
+    return next.handle().pipe(
+      catchError(error => {
+        getInstance().captureError(error)
+        return throwError(() => error)
+      })
+    )
+  }
+}
+```
+
+Use this interceptor as global scope, there are many ways to do that, One way I suggest you is that you can register a global interceptor directly from the app module definition
+
+```ts
+// @src/app.module.ts
+import { Module } from '@nestjs/common'
+import { APP_INTERCEPTOR } from '@nestjs/core'
+
+import { ElasticApmErrorInterceptor } from '@src/libs/apm/elastic-apm.interceptor'
+
+@Module({
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ElasticApmErrorInterceptor
+    }
+  ],
+  imports: [
+    // other modules
+  ]
+})
+export class ApplicationModule {}
+```
+
+### Step 5: Add APM environment variables
+
+These env variables is basic config (see more: https://www.elastic.co/guide/en/apm/agent/nodejs/current/configuration.html)
+
+```
+ELASTIC_APM_ACTIVE=true
+ELASTIC_APM_SERVER_URL=
+```
+
+If the APM server has configured for the secret token or api key, you muse add them into the env variables
+
+```
+ELASTIC_APM_SECRET_TOKEN=
+ELASTIC_APM_API_KEY=
+```
+
+#### Customize the apm agent config
+
+For the ELASTIC_APM_SERVICE_NAME, it can be override by set the env
+
+```
+ELASTIC_APM_SERVICE_NAME=override-name
+```
+
+For the ELASTIC_APM_DISABLE_INSTRUMENTATIONS,it can be override by update the env ELASTIC_APM_DISABLE_INSTRUMENTATIONS (see more: https://www.elastic.co/guide/en/apm/agent/nodejs/current/configuration.html#disable-instrumentations)
+
+```
+ELASTIC_APM_DISABLE_INSTRUMENTATIONS=kafkajs,graphql
+```
+
+## Conclusion
+
+With these steps, you've successfully integrated apm agent into your NestJS project. This feature enhances your Node server by automatically capture errors, tracing data, and performance metrics.
+
+For further information, refer to the official documentation on [APM Node.js Agent](https://www.elastic.co/guide/en/apm/agent/nodejs/current/intro.html).
