@@ -37,7 +37,8 @@ const Projects = defineDocumentType(() => ({
       type: 'list',
       of: { type: 'string' },
       required: true
-    }
+    },
+    startDate: { type: 'date', required: true }
   },
   computedFields
 }))
