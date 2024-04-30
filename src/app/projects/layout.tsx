@@ -11,7 +11,7 @@ import { generateSEO } from '@/lib/generateSEO'
 
 const title = 'projects'
 const description =
-  'Discover the interactive brilliance of my projects, peruse my polished portfolio, and delve into a sneak peek of my formidable technical prowess. Uncover a world where innovation meets functionality, showcased through a meticulously crafted Next.js application. Elevate your digital experience with a seamless blend of creativity and technical finesse.'
+  'Explore the dynamic range of my projects, traverse my refined portfolio, and immerse yourself in a preview of my robust technical capabilities. Embark on a journey where innovation harmonizes with practicality, demonstrated through meticulously crafted Node.js and React.js applications. Elevate your digital journey with a seamless fusion of creativity and technical acumen.'
 const url = `${ENV.NEXT_PUBLIC_WEBSITE_URL}/projects`
 const image = `${ENV.NEXT_PUBLIC_WEBSITE_URL}/api/og?title=${title}`
 

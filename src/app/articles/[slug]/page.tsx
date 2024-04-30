@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: ParamsProps }) {
   const image = `${ENV.NEXT_PUBLIC_WEBSITE_URL}/api/og?title=${title}`
 
   return {
-    ...generateSEO(title, description, image, `/projects/${title}`)
+    ...generateSEO(title, description, image, `/articles/${title}`)
   }
 }
 

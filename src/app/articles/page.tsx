@@ -16,7 +16,7 @@ type SearchParamsProps = {
 
 const title = 'articles'
 const description =
-  "Embark on a journey through a diverse collection of articles, ranging from React deep-dives to engaging non-technical discussions. Whether you're exploring the entire repository or seeking insights on a specific tag, our articles cover a spectrum of topics to cater to both technical enthusiasts and those looking for non-technical perspectives. Discover thought-provoking content and immerse yourself in the world of insights and ideas."
+  "Embark on an enriching journey through a diverse array of articles, spanning from in-depth NodeJS explorations to captivating non-technical dialogues. Whether you're delving into our entire repository or seeking insights on specific topics, our articles encompass a wide spectrum to appeal to both technical aficionados and those with a penchant for non-technical narratives. Uncover thought-provoking content and immerse yourself in a realm brimming with insights and ideas."
 const url = `${ENV.NEXT_PUBLIC_WEBSITE_URL}/articles`
 const image = `${ENV.NEXT_PUBLIC_WEBSITE_URL}/api/og?title=${title}`
 
