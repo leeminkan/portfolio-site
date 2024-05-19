@@ -1,0 +1,145 @@
+---
+title: 'Answer some backend interview questions'
+summary: 'Answer some backend interview questions'
+publishedDate: 'May 18, 2024'
+tag:
+  - Backend
+  - Interview
+---
+
+# What do you understand about "High Cohesion, Loose Coupling" ?
+
+High cohesion and loose coupling are two important concepts in software design that are often used together.
+
+## Cohesion is the degree to which the elements inside a module belong together. Simply put, it means “the code that changes together, stays together”.
+
+> High cohesion advantages
+
+- Modules with a single, well-defined purpose are easy to understand and much more readable
+- It is easier to make code changes since all the related code is within the module.
+- It is easier to test the code.
+
+Overall, highly cohesive modules reflect better quality of software design.
+
+## Coupling is the degree of interdependence between software modules. Effectively, the coupling is about how changing one thing required change in another.
+
+> Loose coupling advantages
+
+- Loosely coupled modules are easier to develop and maintain. Since they are independent of each other, we can develop and test them in parallel.
+- They can be modified and updated without affecting each other.
+
+Overall, loose coupling reflects the higher quality of software design. Hence, we should aim for designing modules that are as independent as possible.
+
+Ref: https://www.baeldung.com/cs/cohesion-vs-coupling
+
+# Why do array indexes start with '0' in most languages?
+
+There are two main reasons why array indexes start at 0 in most programming languages:
+
+1. Memory Representation:
+
+   Arrays store elements contiguously in memory. This means the elements are placed one after another in a reserved block of memory. An array variable itself typically holds the starting memory address of this block. The index acts as an offset from this starting address. To access the first element, you don't need any offset, so it makes sense to use 0.
+
+2. Mathematical Convenience:
+
+   Zero-based indexing aligns well with mathematical operatißons and loops. For instance, if you have an array of size N, iterating through all elements using a loop can be expressed as for (int i = 0; i < N; i++). This is a more concise and natural way to write the loop compared to starting from 1 and needing to check for i < N+1.
+
+# How do tests and TDD influence code design?
+
+Tests and Test-Driven Development (TDD) can significantly influence code design in positive ways.
+
+1. Focus on Functionality:
+
+Tests define what the code should do: By writing tests first, you clearly define the expected behavior of your code before implementing it. This focus on functionality helps you write code that is targeted and achieves its purpose effectively.
+
+2. Early Detection of Design Issues:
+
+Tests expose design problems: The process of writing tests can reveal design flaws in your initial approach. For instance, difficulty in mocking dependencies due to tight coupling or complex logic within a function might indicate areas for improvement.
+
+3. Refactoring and Maintainability:
+
+Tests as safety nets for refactoring: Having a good test suite allows you to refactor your code with confidence. You can make changes and ensure that the functionality hasn't regressed through the tests. This promotes cleaner and more maintainable code over time.
+
+However, it's important to note that TDD doesn't guarantee good design:
+
+- Overly Focusing on Tests: Sometimes developers can get caught up in writing extensive tests for every edge case, leading to overly complex or redundant tests. The focus should remain on clear and essential tests.
+- Mocking for Speed vs. Design: Overuse of mocks to isolate dependencies for testing can hinder refactoring and create tight coupling if not done carefully.
+
+# Write a snippet of code violating the Don't Repeat Yourself (DRY) principle. Then, explain why it is a bad design, and fix it.
+
+```ts
+class Product {
+  name: string
+  price: number
+
+  constructor(name: string, price: number) {
+    this.name = name
+    this.price = price
+  }
+
+  calculateTax(taxRate: number): number {
+    return this.price * taxRate
+  }
+}
+
+class Service {
+  name: string
+  price: number
+
+  constructor(name: string, price: number) {
+    this.name = name
+    this.price = price
+  }
+
+  calculateTax(taxRate: number): number {
+    return this.price * taxRate
+  }
+}
+```
+
+The problem of above code is that both Product and Service classes have identical calculateTax methods. This is DRY violation. Any changes to the tax calculation logic need to be made in both places.
+
+Let's fix this
+
+```ts
+class Item {
+  name: string
+  price: number
+
+  constructor(name: string, price: number) {
+    this.name = name
+    this.price = price
+  }
+
+  calculateTax(taxRate: number): number {
+    return this.price * taxRate
+  }
+}
+
+class Product extends Item {
+  // Additional product specific properties and methods
+}
+
+class Service extends Item {
+  // Additional service specific properties and methods
+}
+```
+
+We create a base class Item with calculateTax methods. Both Product and Service inherit from Item and reuse the shared functionality. This promotes code reuse and simplifies maintenance.
+
+# Are comments in code useful? Some say they should be avoided as much as possible, and hopefully made unnecessary. Do you agree?
+
+Yes, Comments in code can be very useful, but they should be used strategically and effectively.
+
+Pros of Comments:
+
+- Improve Code Readability
+- Document Assumptions and Decisions
+- Improve Maintainability
+- API Documentation
+
+Cons of Comments:
+
+- Outdated Comments
+- Unnecessary Comments
+- Focus on "Why" over "How"
