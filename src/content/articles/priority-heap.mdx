@@ -1,0 +1,90 @@
+---
+title: 'Priority heap'
+summary: 'Priority heap'
+publishedDate: 'May 26, 2024'
+tag:
+  - Algorithm
+  - Interview
+---
+
+```js
+class MinHeap {
+  constructor() {
+    this.heap = []
+  }
+
+  peak() {
+    if (this.heap.length === 0) return null
+    return this.heap[0]
+  }
+
+  add(value) {
+    this.heap.push(value)
+    this.heapifyUp()
+  }
+
+  remove() {
+    if (this.heap.length === 0) {
+      return null
+    }
+    const item = this.heap[0]
+    this.heap[0] = this.heap[this.heap.length - 1]
+    this.heap.pop()
+    this.heapifyDown()
+    return item
+  }
+
+  heapify(list) {
+    for (let index = 0; index < list.length; index++) {
+      this.add(list[index])
+    }
+  }
+
+  heapifyUp() {
+    let index = this.heap.length - 1
+
+    while (true) {
+      // get parent
+      const parentIndex = Math.floor((index - 1) / 2)
+      if (!this.heap[parentIndex]) return
+      if (this.heap[parentIndex] > this.heap[index]) {
+        // swap
+        const temp = this.heap[parentIndex]
+        this.heap[parentIndex] = this.heap[index]
+        this.heap[index] = temp
+        // heapify parent
+        index = parentIndex
+      } else {
+        return
+      }
+    }
+  }
+
+  heapifyDown() {
+    let index = 0
+    while (true) {
+      const leftChild = index * 2 + 1
+      const rightChild = index * 2 + 2
+
+      if (!this.heap[leftChild] && !this.heap[rightChild]) return
+
+      let minIndex = leftChild
+      if (this.heap[rightChild] && this.heap[leftChild] > this.heap[rightChild]) {
+        minIndex = rightChild
+      }
+
+      if (this.heap[index] > this.heap[minIndex]) {
+        // swap
+        const temp = this.heap[minIndex]
+        this.heap[minIndex] = this.heap[index]
+        this.heap[index] = temp
+
+        // heapify min Child
+        index = minIndex
+      } else {
+        return
+      }
+    }
+  }
+}
+```

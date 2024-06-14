@@ -1,0 +1,163 @@
+---
+title: 'Solve leetcode - group anagrams'
+summary: 'Solve leetcode - group anagrams'
+publishedDate: 'May 26, 2024'
+tag:
+  - Leetcode
+  - Interview
+---
+
+# 49. [Group Anagrams](https://leetcode.com/problems/group-anagrams)
+
+Given an array of strings strs, group the anagrams together. You can return the answer in any order.
+
+An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+
+```
+Example 1:
+Input: strs = ["eat","tea","tan","ate","nat","bat"]
+Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
+Example 2:
+Input: strs = [""]
+Output: [[""]]
+Example 3:
+Input: strs = ["a"]
+Output: [["a"]]
+```
+
+Constraints:
+
+```
+1 <= strs.length <= 104
+0 <= strs[i].length <= 100
+strs[i] consists of lowercase English letters.
+```
+
+## Approach 1
+
+### Complexity
+
+- Time complexity:
+  O(n∗k)O(n\*k)O(n∗k)
+  (K is the length of the longest string)
+
+- Space complexity:
+  O(n∗k)O(n\*k)O(n∗k)
+  (K is the length of the longest string)
+
+```js
+/**
+ * @param {string} s
+ * @return {string}
+ */
+var getSignature = function (s) {
+  const count = Array(26).fill(0)
+  for (const c of s) {
+    count[c.charCodeAt(0) - 'a'.charCodeAt(0)]++
+  }
+
+  const result = []
+  for (let i = 0; i < 26; i++) {
+    if (count[i] !== 0) {
+      result.push(String.fromCharCode(i + 'a'.charCodeAt(0)), count[i].toString())
+    }
+  }
+
+  return result.join('')
+}
+
+/**
+ * @param {string[]} strs
+ * @return {string[][]}
+ */
+var groupAnagrams = function (strs) {
+  const result = []
+  const groups = new Map()
+
+  for (const s of strs) {
+    const signature = getSignature(s)
+    if (!groups.has(signature)) {
+      groups.set(signature, [])
+    }
+    groups.get(signature).push(s)
+  }
+
+  groups.forEach(value => result.push(value))
+
+  return result
+}
+```
+
+## Approach 2
+
+### Complexity
+
+- Time complexity:
+  O(n∗k∗logk)O(n _ k _ log k)O(n∗k∗logk)
+  (K is the length of the longest string)
+
+- Space complexity:
+  O(n∗k)O(n\*k)O(n∗k)
+  (K is the length of the longest string)
+
+```js
+var groupAnagrams = function (strs) {
+  const mp = new Map()
+  const ans = []
+
+  for (const str of strs) {
+    const sortedStr = str.split('').sort().join('')
+    if (mp.has(sortedStr)) {
+      ans[mp.get(sortedStr)].push(str)
+    } else {
+      mp.set(sortedStr, ans.length)
+      ans.push([str])
+    }
+  }
+
+  return ans
+}
+```
+
+## My code
+
+```js
+/**
+ * @param {string[]} strs
+ * @return {string[][]}
+ */
+var groupAnagrams = function (strs) {
+  const hashTable = {}
+  strs.forEach(str => {
+    const key = parseToKey(str)
+    if (hashTable[key]) {
+      hashTable[key].push(str)
+    } else {
+      hashTable[key] = [str]
+    }
+  })
+  return Object.values(hashTable)
+}
+
+// sort char of str
+const parseToKey = str => {
+  for (let i = 0; i < str.length - 1; i++) {
+    for (let j = i + 1; j < str.length; j++) {
+      if (str[i] > str[j]) {
+        str = swapStr(str, i, j)
+      }
+    }
+  }
+
+  return str
+}
+
+function swapStr(str, first, last) {
+  return str.substr(0, first) + str[last] + str.substring(first + 1, last) + str[first] + str.substr(last + 1)
+}
+```
+
+## Some things I learned from this problem
+
+- String is immutable, we can't swap the char in the string like we do for array
+  > In JavaScript, primitive values are immutable — once a primitive value is created, it cannot be changed, although the variable that holds it may be reassigned another value. By contrast, objects and arrays are mutable by default — their properties and elements can be changed without reassigning a new value.

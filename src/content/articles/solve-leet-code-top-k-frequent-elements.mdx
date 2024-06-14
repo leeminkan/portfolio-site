@@ -1,0 +1,157 @@
+---
+title: 'Solve leetcode - top k frequent elements'
+summary: 'Solve leetcode - top k frequent elements'
+publishedDate: 'May 26, 2024'
+tag:
+  - Leetcode
+  - Interview
+---
+
+# 347. [Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/description/)
+
+Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order.
+
+```
+Example 1:
+Input: nums = [1,1,1,2,2,3], k = 2
+Output: [1,2]
+Example 2:
+Input: nums = [1], k = 1
+Output: [1]
+```
+
+Constraints:
+
+```
+1 <= nums.length <= 105
+-104 <= nums[i] <= 104
+k is in the range [1, the number of unique elements in the array].
+It is guaranteed that the answer is unique.
+```
+
+Follow up: Your algorithm's time complexity must be better than O(n log n), where n is the array's size.
+
+## My code
+
+```js
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number[]}
+ */
+var topKFrequent = function (nums, k) {
+  const hashMap = new Map()
+
+  for (let index = 0; index < nums.length; index++) {
+    if (hashMap.has(nums[index])) {
+      hashMap.set(nums[index], hashMap.get(nums[index]) + 1)
+    } else {
+      hashMap.set(nums[index], 1)
+    }
+  }
+
+  const heap = new MinHeap()
+  for (const [value, frequent] of hashMap) {
+    heap.add({ value, frequent })
+
+    if (heap.size() > k) {
+      heap.remove()
+    }
+  }
+
+  const result = []
+  while (heap.size()) {
+    result.push(heap.remove().value)
+  }
+
+  return result
+}
+
+class MinHeap {
+  constructor() {
+    this.heap = []
+  }
+
+  size() {
+    return this.heap.length
+  }
+
+  peak() {
+    if (this.heap.length === 0) return null
+    return this.heap[0]
+  }
+
+  add(item) {
+    this.heap.push(item)
+    this.heapifyUp()
+  }
+
+  remove() {
+    if (this.heap.length === 0) {
+      return null
+    }
+    const item = this.heap[0]
+    this.heap[0] = this.heap[this.heap.length - 1]
+    this.heap.pop()
+    this.heapifyDown()
+    return item
+  }
+
+  heapify(list) {
+    for (let index = 0; index < list.length; index++) {
+      this.add(list[index])
+    }
+  }
+
+  heapifyUp() {
+    let index = this.heap.length - 1
+
+    while (true) {
+      // get parent
+      const parentIndex = Math.floor((index - 1) / 2)
+      if (!this.heap[parentIndex]) return
+      if (this.heap[parentIndex].frequent > this.heap[index].frequent) {
+        // swap
+        const temp = this.heap[parentIndex]
+        this.heap[parentIndex] = this.heap[index]
+        this.heap[index] = temp
+        // heapify parent
+        index = parentIndex
+      } else {
+        return
+      }
+    }
+  }
+
+  heapifyDown() {
+    let index = 0
+    while (true) {
+      const leftChild = index * 2 + 1
+      const rightChild = index * 2 + 2
+
+      if (!this.heap[leftChild] && !this.heap[rightChild]) return
+
+      let minIndex = leftChild
+      if (this.heap[rightChild] && this.heap[leftChild].frequent > this.heap[rightChild].frequent) {
+        minIndex = rightChild
+      }
+
+      if (this.heap[index].frequent > this.heap[minIndex].frequent) {
+        // swap
+        const temp = this.heap[minIndex]
+        this.heap[minIndex] = this.heap[index]
+        this.heap[index] = temp
+
+        // heapify min Child
+        index = minIndex
+      } else {
+        return
+      }
+    }
+  }
+}
+```
+
+## Some things I learned from this problem
+
+- Priority queue (min heap, max heap)

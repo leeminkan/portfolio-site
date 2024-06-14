@@ -143,3 +143,11 @@ Cons of Comments:
 - Outdated Comments
 - Unnecessary Comments
 - Focus on "Why" over "How"
+
+# How to deal with failover and user sessions?
+
+Other question: Handle server-failover without requiring end user to re-login due to server session loss
+
+- Session Persistence: Store session data in a persistent storage like a database or a distributed cache. This allows the session data to be retrieved even if the server that created the session fails.
+
+- Stateless Design: Design your application to be stateless as much as possible, where user information is retrieved from the database or cache on each request, reducing reliance on server-side session storage.

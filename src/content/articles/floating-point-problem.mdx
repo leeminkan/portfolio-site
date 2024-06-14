@@ -1,0 +1,54 @@
+---
+title: 'Floating-point problem, why 0.1 + 0.2 == 0.3 is false ?'
+summary: 'Floating-point problem, why 0.1 + 0.2 == 0.3 is false ?'
+publishedDate: 'Jun 14, 2024'
+tag:
+  - Floating-point
+  - JavaScript
+---
+
+# 0.1 + 0.2 Does Not Equal 0.3
+
+Most JavaScript developers have probably heard of this issue, but it's not unique to JavaScript. I've tested it in JavaScript, Python, Java, C/C++, and it seems that most programming languages today yield the same result:
+
+```js
+0.1 + 0.2 == 0.3 // false
+```
+
+## The Root Cause
+
+These languages adhere to the IEEE-754 standard (https://www.geeksforgeeks.org/ieee-standard-754-floating-point-numbers/) for representing floating-point numbers. The IEEE-754 standard has limitations in accurately representing these numbers in binary format.
+
+Example:
+
+It's difficult to represent 1/3 precisely in decimal form (it's approximately 0.333333...), as the number 3 repeats infinitely.
+
+Similarly, in the IEEE-754 standard, 0.1 and 0.2 are also difficult to represent accurately in binary. 0.1 (decimal) is 0.0001100110011... (binary), and 0.2 (decimal) is 0.001100110011... (binary), with the sequence 0011 repeating infinitely.
+
+Therefore, when adding numbers with representation errors, the result will also have an error!
+
+**An interesting fact:** 0.1 + 0.2 == 0.3 is false, but 0.1 + 0.1 == 0.2 is true. Do you know why? (This is an open question for you.)
+
+## Why Still Use the IEEE-754 Standard?
+
+Overall, the IEEE-754 standard provides a balance between performance, accuracy, and compatibility (regardless of the processor or system architecture) for most practical applications.
+
+However, we still need to be aware of its limitations and have appropriate solutions.
+
+## Some Solutions in JavaScript
+
+- 1. Rounding: Use the toFixed() function. Example:
+
+```js
+(0.1 + 0.2).toFixed(1) // "0.3"
+```
+
+Note that toFixed() returns a string.
+
+- 2. Use Libraries: decimal.js, big.js, and dinero.js are libraries that support calculations with higher precision.
+
+This concludes the post. If you have any thoughts or other solutions, please leave a comment below.
+
+References:
+
+- https://0.30000000000000004.com/
