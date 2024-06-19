@@ -28,7 +28,7 @@ export default function ArticleLayout({ children }: { children: React.ReactNode 
                   {item.list.map((listItem, j) => (
                     <FadeIn key={j}>
                       <Suspense fallback={<>Loading...</>}>
-                        <AsideLink href={listItem.href} startWith='/projects' title={listItem.title}>
+                        <AsideLink href={listItem.href} title={listItem.title}>
                           <listItem.icon className='w-4 h-4' />
                           {listItem.title}
                         </AsideLink>

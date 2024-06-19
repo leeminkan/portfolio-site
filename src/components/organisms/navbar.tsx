@@ -46,5 +46,9 @@ export const navMenu = [
   {
     name: '_articles',
     path: '/articles'
+  },
+  {
+    name: '_demo',
+    path: '/demo'
   }
 ]

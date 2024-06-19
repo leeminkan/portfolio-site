@@ -37,7 +37,7 @@ export default async function AboutLayout({ children }: { children: React.ReactN
                   {item.list.map((listItem, j) => (
                     <FadeIn key={j}>
                       <Suspense fallback={<>Loading...</>}>
-                        <AsideLink href={listItem.href} startWith='/about'>
+                        <AsideLink href={listItem.href}>
                           <span className='shrink-0'>{listItem.icon}</span>
                           {listItem.title}
                         </AsideLink>

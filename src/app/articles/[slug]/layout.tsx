@@ -30,7 +30,6 @@ export default async function ArticleDetailLayout({ children, params }: { childr
                     <Suspense fallback={<>Loading...</>}>
                       <AsideLink
                         href={'#' + slugify(heading.text)}
-                        startWith={`/projects/${params.slug}`}
                         title={heading.text}
                         data-level={heading.level}
                         className='data-[level=three]:pl-8 data-[level=four]:pl-10 text-xs'

@@ -32,7 +32,7 @@ export default function AboutLayout({ children }: { children: React.ReactNode })
                   {item.list.map((listItem, j) => (
                     <FadeIn key={j}>
                       <Suspense fallback={<>Loading...</>}>
-                        <AsideLink href={listItem.href} startWith='/projects' title={listItem.title}>
+                        <AsideLink href={listItem.href} title={listItem.title}>
                           {listItem.icon}
                           {listItem.title}
                         </AsideLink>
