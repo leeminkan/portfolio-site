@@ -45,7 +45,7 @@ export default function Articles({ searchParams }: SearchParamsProps) {
                   <p className='text-xs text-muted-foreground hidden md:block'>{articles.publishedDate}</p>
                   <div className='flex items-center gap-x-1'>
                     <p className='text-sm text-muted-foreground'>Tags: </p>
-                    <Badge>{articles.tag}</Badge>
+                    {articles.tag && articles.tag.map((tag, i) => <Badge key={i}>{tag}</Badge>)}
                   </div>
                 </div>
                 <Button variant='outline' className='ml-auto' asChild>

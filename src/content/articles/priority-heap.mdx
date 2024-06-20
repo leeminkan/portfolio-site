@@ -7,6 +7,25 @@ tag:
   - Interview
 ---
 
+## What is a Priority Heap?
+
+A priority heap is a bit like a family tree, except each person (or piece of data) has a priority number attached to them. The higher the number, the more important they are. The most important person always sits at the top of the tree, and their children (the data below them) are less important.
+
+## How Does It Work?
+
+Priority heaps have a few special tricks:
+
+- Add: You can add a new person to the tree, and they'll automatically find their right place based on their priority.
+- Peek: You can quickly see who the most important person is without removing them from the tree.
+- Remove: You can take the most important person off the top of the tree, and everyone else will shuffle around to keep the tree organized.
+
+## When Should You Use a Priority Heap?
+
+- Whenever you need to keep track of the most important things in a group.
+- In situations where you often need to add new things or remove the top priority item.
+
+## Implementation (JS)
+
 ```js
 class MinHeap {
   constructor() {

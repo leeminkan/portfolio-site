@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { RiReactjsLine } from 'react-icons/ri'
-import { TbBrandNextjs, TbBrandLaravel } from 'react-icons/tb'
+import { TbBrandNextjs, TbBrandLaravel, TbBrandNodejs } from 'react-icons/tb'
 import { HiTerminal } from 'react-icons/hi'
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/atoms/accordion'
@@ -58,6 +58,11 @@ const data = [
         title: 'All Projects',
         href: '/projects',
         icon: <HiTerminal className='w-4 h-4' />
+      },
+      {
+        title: 'NodeJS',
+        href: '/projects?tag=NodeJS',
+        icon: <TbBrandNodejs className='w-4 h-4' />
       },
       {
         title: 'Laravel',
