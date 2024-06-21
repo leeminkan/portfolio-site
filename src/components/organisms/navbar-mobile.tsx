@@ -169,5 +169,9 @@ export const navMenu = [
         path: 'https://www.instagram.com/hi_im_kan_/'
       }
     ]
+  },
+  {
+    name: '_my-cv',
+    path: '/cv.pdf'
   }
 ]
