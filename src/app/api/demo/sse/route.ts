@@ -23,6 +23,7 @@ export async function GET(req: NextRequest) {
         await writer.write(encoder.encode('data: ' + sentence + '\n\n'))
         await sleep(1000)
       }
+      writer.close().catch(() => {})
     } catch (error: any) {
       // if error does not come from closed writer
       if (error.code !== 'ERR_INVALID_STATE') {
