@@ -1,22 +1,9 @@
+// Since we deploy this project to vercel, it split our code into multiple serverless function, each function only have 10s for the timeout time.
+// So we need to limit this content
 export const content = [
   'Chúc bạn một ngày tràn đầy niềm vui và tiếng cười!',
   'Chúc bạn luôn tỏa sáng như những vì sao trên bầu trời!',
   'Chúc bạn thành công vượt bậc trên con đường bạn đã chọn!',
   'Chúc bạn luôn mạnh mẽ và kiên cường trước mọi thử thách!',
-  'Chúc bạn luôn hạnh phúc và bình yên trong tâm hồn!',
-  'Chúc bạn luôn tự tin và vững bước trên hành trình của mình!',
-  'Chúc bạn luôn tìm thấy niềm vui trong những điều nhỏ bé!',
-  'Chúc bạn luôn được yêu thương và trân trọng!',
-  'Chúc bạn luôn có đủ sức khỏe để theo đuổi ước mơ!',
-  'Chúc bạn luôn gặp nhiều may mắn và thuận lợi!',
-  'Chúc bạn luôn tràn đầy năng lượng và nhiệt huyết!',
-  'Chúc bạn luôn sáng tạo và không ngừng học hỏi!',
-  'Chúc bạn luôn giữ vững niềm tin và hy vọng!',
-  'Chúc bạn luôn được sống trọn vẹn từng khoảnh khắc!',
-  'Chúc bạn luôn có những người bạn tốt đồng hành!',
-  'Chúc bạn luôn được gia đình yêu thương và ủng hộ!',
-  'Chúc bạn luôn là chính mình và tỏa sáng theo cách riêng!',
-  'Chúc bạn luôn tìm thấy bình yên trong tâm hồn!',
-  'Chúc bạn luôn có những trải nghiệm đáng nhớ!',
-  'Chúc bạn luôn có một cuộc sống ý nghĩa và trọn vẹn!'
+  'Chúc bạn luôn hạnh phúc và bình yên trong tâm hồn!'
 ]
