@@ -18,6 +18,7 @@ export const Navbar = () => {
               {menu.name}
             </NavLink>
           ))}
+          <NavLink href='/cv.pdf'>_my-cv</NavLink>
         </ul>
         <ThemeToggle />
         <NavbarMobileBtn />
