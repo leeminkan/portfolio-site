@@ -70,7 +70,7 @@ export const ProjectCard = ({ data }: { data: Projects }) => {
           </div>
         </DialogHeader>
         <DialogFooter>
-          <Link href={`/projects/${data.title.toLowerCase()}`} className={buttonVariants({ variant: 'default' })}>
+          <Link href={`/projects/${data.slug}`} className={buttonVariants({ variant: 'default' })}>
             Details
           </Link>
         </DialogFooter>

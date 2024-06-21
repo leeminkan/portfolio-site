@@ -10,7 +10,7 @@ type ParamsProps = {
 }
 
 async function getProjectFromParams(params: ParamsProps) {
-  const post = allProjects.find(post => post.title.toLowerCase() === decodeURIComponent(params.title).toLowerCase())
+  const post = allProjects.find(post => post.slug === decodeURIComponent(params.title).toLowerCase())
   if (!post) null
 
   return post
