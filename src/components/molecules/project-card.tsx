@@ -40,7 +40,7 @@ export const ProjectCard = ({ data }: { data: Projects }) => {
               <Image src={data.image} alt={data.title} fill className='object-cover object-top group-hover:scale-105 transition-transform duration-500' />
             </figure>
             <ul className='md:flex hidden items-center gap-x-2 border-y py-2'>
-              <li className='text-foreground'>Technologies :</li>
+              <li className='text-foreground'>Technologies:</li>
               {data.tag && (
                 <li className='space-x-1'>
                   {data.tag.map((tech, i) => (
@@ -50,7 +50,7 @@ export const ProjectCard = ({ data }: { data: Projects }) => {
               )}
             </ul>
             <ul className='flex md:hidden items-center gap-x-2 border-y py-2'>
-              <li className='text-foreground'>Technologies :</li>
+              <li className='text-foreground'>Technologies:</li>
               {data.tag.length > 3 ? (
                 <li className='space-x-1'>
                   {data.tag.slice(0, 3).map((tech, i) => (
