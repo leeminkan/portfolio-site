@@ -1,7 +1,8 @@
 import { Suspense } from 'react'
 import { RiReactjsLine } from 'react-icons/ri'
-import { TbBrandNextjs, TbBrandLaravel, TbBrandNodejs } from 'react-icons/tb'
+import { TbBrandNextjs, TbBrandLaravel, TbBrandNodejs, TbBrandMysql, TbBrandMongodb, TbProgressBolt } from 'react-icons/tb'
 import { HiTerminal } from 'react-icons/hi'
+import { SiNestjs, SiPostgresql } from 'react-icons/si'
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/atoms/accordion'
 import { AsideLink } from '@/components/atoms/aside-link'
@@ -65,6 +66,16 @@ const data = [
         icon: <TbBrandNodejs className='w-4 h-4' />
       },
       {
+        title: 'NestJS',
+        href: '/projects?tag=NestJS',
+        icon: <SiNestjs className='w-4 h-4' />
+      },
+      {
+        title: 'ExpressJS',
+        href: '/projects?tag=ExpressJS',
+        icon: <TbBrandNodejs className='w-4 h-4' />
+      },
+      {
         title: 'Laravel',
         href: '/projects?tag=Laravel',
         icon: <TbBrandLaravel className='w-4 h-4' />
@@ -75,9 +86,24 @@ const data = [
         icon: <RiReactjsLine className='w-4 h-4' />
       },
       {
-        title: 'Next',
-        href: '/projects?tag=Next',
+        title: 'NextJS',
+        href: '/projects?tag=NextJS',
         icon: <TbBrandNextjs className='w-4 h-4' />
+      },
+      {
+        title: 'Mysql',
+        href: '/projects?tag=Mysql',
+        icon: <TbBrandMysql className='w-4 h-4' />
+      },
+      {
+        title: 'MongoDB',
+        href: '/projects?tag=MongoDB',
+        icon: <TbBrandMongodb className='w-4 h-4' />
+      },
+      {
+        title: 'Postgresql',
+        href: '/projects?tag=Postgresql',
+        icon: <SiPostgresql className='w-4 h-4' />
       }
     ]
   }

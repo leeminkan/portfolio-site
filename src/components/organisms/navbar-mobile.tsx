@@ -112,6 +112,14 @@ export const navMenu = [
         path: '/projects?tag=NodeJS'
       },
       {
+        name: 'NestJS',
+        path: '/projects?tag=NestJS'
+      },
+      {
+        name: 'ExpressJS',
+        path: '/projects?tag=ExpressJS'
+      },
+      {
         name: 'Laravel',
         path: '/projects?tag=Laravel'
       },
@@ -120,8 +128,20 @@ export const navMenu = [
         path: '/projects?tag=React'
       },
       {
-        name: 'Next',
-        path: '/projects?tag=Next'
+        name: 'NextJS',
+        path: '/projects?tag=NextJS'
+      },
+      {
+        name: 'Mysql',
+        path: '/projects?tag=Mysql'
+      },
+      {
+        name: 'MongoDB',
+        path: '/projects?tag=MongoDB'
+      },
+      {
+        name: 'Postgresql',
+        path: '/projects?tag=Postgresql'
       }
     ]
   },
