@@ -68,7 +68,19 @@ module.exports = {
       fontFamily: {
         sans: ['var(--font-geist-sans)'],
         mono: ['var(--font-geist-mono)']
-      }
+      },
+      typography: (theme: (path: string) => string) => ({
+        DEFAULT: {
+          css: {
+            '--tw-prose-code': theme('colors.blue.600')
+          }
+        },
+        dark: {
+          css: {
+            '--tw-prose-code': theme('colors.blue.400')
+          }
+        }
+      })
     }
   },
   plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')]

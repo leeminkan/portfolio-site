@@ -22,8 +22,8 @@ export const {
   adapter: PrismaAdapter(db),
   providers: [
     GitHub({
-      clientId: ENV.GITHUB_CLIENT_ID,
-      clientSecret: ENV.GITHUB_CLIENT_SECRET
+      clientId: ENV.GITHUB_CLIENT_ID ?? '',
+      clientSecret: ENV.GITHUB_CLIENT_SECRET ?? ''
     })
   ],
   callbacks: {

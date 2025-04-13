@@ -1,4 +1,4 @@
-import { Session } from 'next-auth/types'
+import { Session } from 'next-auth'
 import { Post, User } from '@prisma/client'
 import { RemoveBtn } from '@/app/guest-book/action-buttons'
 
