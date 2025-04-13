@@ -1,5 +1,5 @@
 ---
-title: 'How to implement time-based partitioning'
+title: 'How to implement time-based partitioning with PostgreSQL'
 summary: 'Learn how to implement time-based partitioning for an event logging system using NestJS, Drizzle ORM, and PostgreSQL.'
 publishedDate: 'Apr 12, 2025'
 tag:
@@ -605,6 +605,8 @@ Alright, aspiring data architect! This is a great area to dive into. Handling la
   WHERE created_at >= '2025-04-05 00:00:00+00' AND created_at < '2025-04-10 00:00:00+00';
   ```
 - The `EXPLAIN ANALYZE` output should show that it only scanned the `event_logs_y2025m04` partition, not others (if they existed). This is where the performance gain comes from, especially with many partitions.
+
+![Query Explanation](/articles/how-to-implement-time-based-partitioning-with-postgresql/explain-query.png)
 
 ---
 
